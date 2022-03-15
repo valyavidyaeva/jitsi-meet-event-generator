@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Create Jitsi Meet conference</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="popup.css">
+</head>
+<body>
+    <form id="conf-form" class="conf-form">
+        <div class="conf-form__field-group conf-form__group">
+            <label for="conf-name" class="conf-form__label" data-i18n="popupConfName"></label>
+            <input type="text" id="conf-name" value="" class="conf-form__field conf-form__field_big">
+        </div>
+        <div class="conf-form__field-group conf-form__group">
+            <label for="conf-theme" class="conf-form__label" data-i18n="popupConfTheme"></label>
+            <input type="text" id="conf-theme" value="" class="conf-form__field conf-form__field_big">
+        </div>
+        <div class="conf-form__field-group conf-form__group">
+            <label for="conf-start-date" class="conf-form__label" data-i18n="popupStart"></label>
+            <div class="conf-form__fields-row">
+                <input type="date" id="conf-start-date" class="conf-form__field conf-form__field_medium js-date-time-input" value="">
+                <input type="time" id="conf-start-time" class="conf-form__field conf-form__field_small js-date-time-input" value="">
+            </div>
+        </div>
+        <div class="conf-form__field-group conf-form__group">
+            <label for="conf-end-date" class="conf-form__label" data-i18n="popupEnd"></label>
+            <div class="conf-form__fields-row">
+                <input type="date" id="conf-end-date" class="conf-form__field conf-form__field_medium js-date-time-input" value="">
+                <input type="time" id="conf-end-time" class="conf-form__field conf-form__field_small js-date-time-input" value="">
+            </div>
+        </div>
+        <div class="conf-form__field-group conf-form__group">
+            <label for="conf-duration" class="conf-form__label" data-i18n="popupDuration"></label>
+            <input type="text" id="conf-duration" class="conf-form__field conf-form__field_small js-date-time-input" value="">
+        </div>
+        <div class="conf-form__group note">
+            <p class="note__item"><span data-i18n="popupTimezoneValue"></span>: <span id="js-timezone-value"></span></p>
+            <p class="note__item" data-i18n="popupTimezoneDescription"></p>
+        </div>
+
+        <div class="conf-form__footer">
+            <button type="reset" id="cancel-btn" class="conf-form__btn conf-form__btn_cancel" data-i18n="popupCancel"></button>
+            <button type="submit" id="create-btn" class="conf-form__btn conf-form__btn_submit" data-i18n="popupSubmit" disabled></button>
+        </div>
+    </form>
+
+    <script src="../scripts/common.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>

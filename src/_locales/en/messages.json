@@ -1,0 +1,152 @@
+{
+  "extensionName": {
+    "message": "Jitsi Meet event generator"
+  },
+  "extensionDescription": {
+    "message": "Event and link generator for Jitsi Meet service."
+  },
+  "composeTitle": {
+    "message": "New Jitsi Meet"
+  },
+  "optionsTimezone": {
+    "message": "Timezone"
+  },
+  "optionsServerAddress": {
+    "message": "Server address"
+  },
+  "optionsServerAddressPublic": {
+    "message": "Public"
+  },
+  "optionsServerAddressPrivate": {
+    "message": "Private"
+  },
+  "optionsOrganizer": {
+    "message": "Organizer"
+  },
+  "optionsConfTitle": {
+    "message": "Title"
+  },
+  "optionsConfDescription": {
+    "message": "Description"
+  },
+  "optionsConfName": {
+    "message": "Conference name"
+  },
+  "optionsConfNameRandom": {
+    "message": "Random"
+  },
+  "optionsConfNameOwn": {
+    "message": "Own"
+  },
+  "optionsConfSettings": {
+    "message": "Conference settings"
+  },
+  "optionsConfSettingsRequiredName": {
+    "message": "Name specification"
+  },
+  "optionsConfSettingsNoSound": {
+    "message": "Start without sound"
+  },
+  "optionsConfSettingsNoVideo": {
+    "message": "Start without video"
+  },
+  "optionsAlarmLabel": {
+    "message": "Reminder"
+  },
+  "optionsAlarmLabel0": {
+    "message": "Do not remind"
+  },
+  "optionsAlarmLabelPT0M": {
+    "message": "At the time of the event"
+  },
+  "optionsAlarmLabelPT5M": {
+    "message": "In 5 minutes"
+  },
+  "optionsAlarmLabelPT15M": {
+    "message": "In 15 minutes"
+  },
+  "optionsAlarmLabelPT30M": {
+    "message": "In 30 minutes"
+  },
+  "optionsAlarmLabelPT1H": {
+    "message": "1 hour before"
+  },
+  "optionsAlarmLabelPT2H": {
+    "message": "2 hours before"
+  },
+  "optionsAlarmLabelPT12H": {
+    "message": "12 hours before"
+  },
+  "optionsAlarmLabelPT1D": {
+    "message": "1 day before"
+  },
+  "optionsAlarmLabelPT7D": {
+    "message": "1 week before"
+  },
+  "optionsMessageTemplate": {
+    "message": "Message template"
+  },
+  "optionsMessageTemplateDescriptionTitle": {
+    "message": "In template can be used these variables:"
+  },
+  "optionsSaveBtn": {
+    "message": "Save"
+  },
+  "templateConfName": {
+    "message": "Conference name"
+  },
+  "templateConfDescription": {
+    "message": "Description"
+  },
+  "templateOrganizer": {
+    "message": "Organizer"
+  },
+  "templateStartDate": {
+    "message": "Start date"
+  },
+  "templateStartTime": {
+    "message": "Start time"
+  },
+  "templateEndDate": {
+    "message": "End date"
+  },
+  "templateEndTime": {
+    "message": "End time"
+  },
+  "templateDuration": {
+    "message": "Duration, min"
+  },
+  "templateTimezone": {
+    "message": "Timezone"
+  },
+  "templateLink": {
+    "message": "Link"
+  },
+  "popupConfName": {
+    "message": "Conference name"
+  },
+  "popupConfTheme": {
+    "message": "Conference theme"
+  },
+  "popupStart": {
+    "message": "Start"
+  },
+  "popupEnd": {
+    "message": "End"
+  },
+  "popupDuration": {
+    "message": "Duration, min"
+  },
+  "popupTimezoneValue": {
+    "message": "Timezone"
+  },
+  "popupTimezoneDescription": {
+    "message": "You can change timezone in addon's settings"
+  },
+  "popupCancel": {
+    "message": "Cancel"
+  },
+  "popupSubmit": {
+    "message": "Insert"
+  }
+}

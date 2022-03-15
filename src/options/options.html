@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Create Jitsi Meet conference</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="options.css">
+</head>
+<body>
+    <form id="options-form" class="options-page">
+        <div class="conf-form__field-group conf-form__group">
+            <label for="timezone" class="conf-form__label" data-i18n="optionsTimezone"></label>
+            <select name="timezone" id="timezone" data-text="" class="conf-form__field"></select>
+        </div>
+
+        <div class="conf-form__group">
+            <h2 class="conf-form__group-title" data-i18n="optionsServerAddress"></h2>
+            <div class="conf-form__field-group conf-form__field-group_flex conf-form__list-field-item">
+                <input type="radio" name="server" id="server-public" value="public" class="conf-form__radio" checked>
+                <label for="server-public" class="conf-form__label" data-i18n="optionsServerAddressPublic"></label>
+            </div>
+            <div class="conf-form__field-group conf-form__field-group_flex conf-form__list-field-item">
+                <input type="radio" name="server" id="server-custom" value="custom" class="conf-form__radio">
+                <label for="server-custom" class="conf-form__label" data-i18n="optionsServerAddressPrivate"></label>
+                <input type="text" id="server-custom-value" value="" class="conf-form__field conf-form__field_in-flex" placeholder="meet.jit.si">
+            </div>
+        </div>
+
+        <div class="conf-form__field-group conf-form__group">
+            <label for="organizer" class="conf-form__label" data-i18n="optionsOrganizer"></label>
+            <input type="text" id="organizer" value="" placeholder="organizer@mail.com" class="conf-form__field">
+        </div>
+
+        <div class="conf-form__field-group conf-form__group">
+            <label for="conf-title" class="conf-form__label" data-i18n="optionsConfTitle"></label>
+            <input type="text" id="conf-title" value="" class="conf-form__field">
+        </div>
+
+        <div class="conf-form__group">
+            <label for="conf-description" class="conf-form__label" data-i18n="optionsConfDescription"></label>
+            <textarea name="conf-description" id="conf-description" class="conf-form__textarea"></textarea>
+        </div>
+
+        <div class="conf-form__group">
+            <h2 class="conf-form__group-title" data-i18n="optionsConfName"></h2>
+            <div class="conf-form__field-group conf-form__field-group_flex conf-form__list-field-item">
+                <input type="radio" name="conf-name" id="conf-name-random" value="random" class="conf-form__radio" checked>
+                <label for="conf-name-random" class="conf-form__label" data-i18n="optionsConfNameRandom"></label>
+            </div>
+            <div class="conf-form__field-group conf-form__field-group_flex conf-form__list-field-item">
+                <input type="radio" name="conf-name" id="conf-name-custom" value="custom" class="conf-form__radio">
+                <label for="conf-name-custom" class="conf-form__label" data-i18n="optionsConfNameOwn"></label>
+                <input type="text" id="conf-name-custom-value" value="" class="conf-form__field conf-form__field_in-flex" placeholder="daily-meeting">
+            </div>
+        </div>
+
+        <div class="conf-form__group">
+            <h2 class="conf-form__group-title" data-i18n="optionsConfSettings"></h2>
+            <div class="conf-form__field-group conf-form__field-group_flex conf-form__list-field-item">
+                <input type="checkbox" name="required-user-name" id="required-user-name" class="conf-form__checkbox" checked>
+                <label for="required-user-name" data-i18n="optionsConfSettingsRequiredName"></label>
+            </div>
+            <div class="conf-form__field-group conf-form__field-group_flex conf-form__list-field-item">
+                <input type="checkbox" name="no-sound" id="no-sound" class="conf-form__checkbox" checked>
+                <label for="no-sound" data-i18n="optionsConfSettingsNoSound"></label>
+            </div>
+            <div class="conf-form__field-group conf-form__field-group_flex conf-form__list-field-item">
+                <input type="checkbox" name="no-video" id="no-video" class="conf-form__checkbox" checked>
+                <label for="no-video" data-i18n="optionsConfSettingsNoVideo"></label>
+            </div>
+        </div>
+
+        <div class="conf-form__group">
+            <div class="conf-form__field-group conf-form__group">
+                <label for="alarm" class="conf-form__label" data-i18n="optionsAlarmLabel"></label>
+                <select name="alarm" id="alarm" class="conf-form__field">
+                    <option value="0" data-i18n="optionsAlarmLabel0"></option>
+                    <option value="-PT0M" data-i18n="optionsAlarmLabelPT0M"></option>
+                    <option value="-PT5M" data-i18n="optionsAlarmLabelPT5M"></option>
+                    <option value="-PT15M" data-i18n="optionsAlarmLabelPT15M"></option>
+                    <option value="-PT30M" data-i18n="optionsAlarmLabelPT30M"></option>
+                    <option value="-PT1H" data-i18n="optionsAlarmLabelPT1H"></option>
+                    <option value="-PT2H" data-i18n="optionsAlarmLabelPT2H"></option>
+                    <option value="-PT12H" data-i18n="optionsAlarmLabelPT12H"></option>
+                    <option value="-PT1D" data-i18n="optionsAlarmLabelPT1D"></option>
+                    <option value="-PT7D" data-i18n="optionsAlarmLabelPT7D"></option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label for="message-template" class="conf-form__label" data-i18n="optionsMessageTemplate"></label>
+            <p class="template__vars-title" data-i18n="optionsMessageTemplateDescriptionTitle"></p>
+            <ul class="template__vars-list">
+                <li>${title} — <span data-i18n="templateConfName"></span></li>
+                <li>${description} — <span data-i18n="templateConfDescription"></span></li>
+                <li>${organizer} — <span data-i18n="templateOrganizer"></span></li>
+                <li>${startDate} — <span data-i18n="templateStartDate"></span></li>
+                <li>${startTime} — <span data-i18n="templateStartTime"></span></li>
+                <li>${endDate} — <span data-i18n="templateEndDate"></span></li>
+                <li>${endTime} — <span data-i18n="templateEndTime"></span></li>
+                <li>${duration} — <span data-i18n="templateDuration"></span></li>
+                <li>${timezone} — <span data-i18n="templateTimezone"></span></li>
+                <li>${confLink} — <span data-i18n="templateLink"></span></li>
+            </ul>
+            <textarea name="message-template" id="message-template" class="conf-form__textarea"></textarea>
+        </div>
+
+        <button type="submit" data-i18n="optionsSaveBtn" class="conf-form__save-btn"></button>
+    </form>
+
+    <script src="../scripts/timezones.js"></script>
+    <script src="../scripts/common.js"></script>
+    <script src="options.js"></script>
+</body>
+</html>

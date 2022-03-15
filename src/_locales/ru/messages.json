@@ -1,0 +1,152 @@
+{
+  "extensionName": {
+    "message": "Генератор события Jitsi Meet"
+  },
+  "extensionDescription": {
+    "message": "Генератор события и ссылки на сервис Jitsi Meet."
+  },
+  "composeTitle": {
+    "message": "Создать событие Jitsi Meet"
+  },
+  "optionsTimezone": {
+    "message": "Часовой пояс"
+  },
+  "optionsServerAddress": {
+    "message": "Адрес сервера"
+  },
+  "optionsServerAddressPublic": {
+    "message": "Публичный"
+  },
+  "optionsServerAddressPrivate": {
+    "message": "Приватный"
+  },
+  "optionsOrganizer": {
+    "message": "Организатор"
+  },
+  "optionsConfTitle": {
+    "message": "Заголовок"
+  },
+  "optionsConfDescription": {
+    "message": "Пояснение"
+  },
+  "optionsConfName": {
+    "message": "Имя конференции"
+  },
+  "optionsConfNameRandom": {
+    "message": "Случайное"
+  },
+  "optionsConfNameOwn": {
+    "message": "Собственное"
+  },
+  "optionsConfSettings": {
+    "message": "Настройки конференции"
+  },
+  "optionsConfSettingsRequiredName": {
+    "message": "Указание имени"
+  },
+  "optionsConfSettingsNoSound": {
+    "message": "Начать без звука"
+  },
+  "optionsConfSettingsNoVideo": {
+    "message": "Начать без видео"
+  },
+  "optionsAlarmLabel": {
+    "message": "Напоминание"
+  },
+  "optionsAlarmLabel0": {
+    "message": "Не напоминать"
+  },
+  "optionsAlarmLabelPT0M": {
+    "message": "В момент события"
+  },
+  "optionsAlarmLabelPT5M": {
+    "message": "За 5 минут"
+  },
+  "optionsAlarmLabelPT15M": {
+    "message": "За 15 минут"
+  },
+  "optionsAlarmLabelPT30M": {
+    "message": "За 30 минут"
+  },
+  "optionsAlarmLabelPT1H": {
+    "message": "За 1 час до"
+  },
+  "optionsAlarmLabelPT2H": {
+    "message": "За 2 часа до"
+  },
+  "optionsAlarmLabelPT12H": {
+    "message": "За 12 часов до"
+  },
+  "optionsAlarmLabelPT1D": {
+    "message": "За 1 день до"
+  },
+  "optionsAlarmLabelPT7D": {
+    "message": "За 1 неделю до"
+  },
+  "optionsMessageTemplate": {
+    "message": "Шаблон сообщения"
+  },
+  "optionsMessageTemplateDescriptionTitle": {
+    "message": "В шаблоне можно использовать эти переменные:"
+  },
+  "optionsSaveBtn": {
+    "message": "Сохранить"
+  },
+  "templateConfName": {
+    "message": "Имя конференции"
+  },
+  "templateConfDescription": {
+    "message": "Пояснение"
+  },
+  "templateOrganizer": {
+    "message": "Организатор"
+  },
+  "templateStartDate": {
+    "message": "Дата начала"
+  },
+  "templateStartTime": {
+    "message": "Время начала"
+  },
+  "templateEndDate": {
+    "message": "Дата окончания"
+  },
+  "templateEndTime": {
+    "message": "Время окончания"
+  },
+  "templateDuration": {
+    "message": "Длительность, мин"
+  },
+  "templateTimezone": {
+    "message": "Временная зона"
+  },
+  "templateLink": {
+    "message": "Ссылка на конференцию"
+  },
+  "popupConfName": {
+    "message": "Имя конференции"
+  },
+  "popupConfTheme": {
+    "message": "Тема конференции"
+  },
+  "popupStart": {
+    "message": "Начало"
+  },
+  "popupEnd": {
+    "message": "Окончание"
+  },
+  "popupDuration": {
+    "message": "Длительность, мин"
+  },
+  "popupTimezoneValue": {
+    "message": "Временная зона"
+  },
+  "popupTimezoneDescription": {
+    "message": "Изменить временную зону можно в настройках расширения"
+  },
+  "popupCancel": {
+    "message": "Отмена"
+  },
+  "popupSubmit": {
+    "message": "Вставить"
+  }
+}
