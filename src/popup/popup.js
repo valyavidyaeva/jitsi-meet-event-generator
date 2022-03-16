@@ -1,3 +1,4 @@
+const JITSI_DOMAIN = 'https://meet.jit.si/';
 let emailState = {
     attachments: [],
     subject: '',
@@ -129,18 +130,20 @@ function createIcsFile() {
     const eventDate = {
             start: document.querySelector('#conf-start-date').value,
             end: document.querySelector('#conf-end-date').value
-        },
-        eventTime = {
+        };
+    const eventTime = {
             start: document.querySelector('#conf-start-time').value,
             end: document.querySelector('#conf-end-time').value
-        },
-        timezone = storageData.timezone;
+        };
+    const timezone = storageData.timezone;
+    const location = storageData.server === 'custom' && storageData['server-custom-value'] ? storageData['server-custom-value'] : JITSI_DOMAIN;
 
     const data = createIcsEvent({
         uid: UIDGenerator(eventDate, eventTime, timezone),
         date: eventDate,
         time: eventTime,
         timezone,
+        location,
         summary: document.getElementById('conf-subject').value,
         description: storageData['conf-description'],
         organizer: storageData.organizer,
@@ -151,7 +154,7 @@ function createIcsFile() {
 }
 
 function createIcsEvent(data) {
-    const { uid, date, time, timezone, summary, description, organizer, alarm, url } = data;
+    const { uid, date, time, timezone, location, summary, description, organizer, alarm, url } = data;
     let alarmBlock = "";
     if (alarm) {
         alarmBlock =
@@ -163,7 +166,7 @@ function createIcsEvent(data) {
         ;
     }
     return "BEGIN:VCALENDAR\n" +
-        "PRODID:-//Test Cal//EN\n" +
+        "PRODID:-//Jitsi Meet Event//EN\n" +
         "VERSION:2.0\n" +
         "CALSCALE:GREGORIAN\n" +
         "METHOD:REQUEST\n" +
@@ -173,7 +176,7 @@ function createIcsEvent(data) {
         "DTSTART;TZID=" + timezone + ":" + convertDate(date.start, time.start) + "\n" +
         "DTEND;TZID=" + timezone + ":" + convertDate(date.end, time.end) + "\n" +
         "UID:" + uid + "\n" +
-        "LOCATION:" + url + "\n" +
+        "LOCATION:" + location + "\n" +
         "URL:" + url + "\n" +
         (organizer ? "ORGANIZER;CN=" + organizer + ":mailto:" + organizer + "\n" : "") +
         (description ? "DESCRIPTION:" + description + "\n" : "") +
@@ -263,22 +266,15 @@ function createMessageBody() {
 
 function createConfLink() {
     // Docs https://jitsi.github.io/handbook/docs/user-guide/user-guide-advanced
-    const JITSI_DOMAIN = 'https://meet.jit.si/';
 
-    let domain;
+    let domain = JITSI_DOMAIN;
     if (storageData['server-custom-value']) {
         domain = storageData['server-custom-value'];
     }
-    else {
-        domain = JITSI_DOMAIN;
-    }
 
-    let confName = '';
+    let confName = getRandomString();
     if (storageData['conf-name'] === 'custom' && storageData['conf-name-custom-value']) {
         confName = storageData['conf-name-custom-value'];
-    }
-    else {
-        confName = getRandomString();
     }
 
     let confLink = '';
