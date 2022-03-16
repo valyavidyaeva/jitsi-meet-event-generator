@@ -89,8 +89,8 @@
   "optionsSaveBtn": {
     "message": "Save"
   },
-  "templateConfName": {
-    "message": "Conference name"
+  "templateConfSubject": {
+    "message": "Conference subject"
   },
   "templateConfDescription": {
     "message": "Description"
@@ -122,8 +122,8 @@
   "popupConfName": {
     "message": "Conference name"
   },
-  "popupConfTheme": {
-    "message": "Conference theme"
+  "popupConfSubject": {
+    "message": "Conference subject"
   },
   "popupStart": {
     "message": "Start"

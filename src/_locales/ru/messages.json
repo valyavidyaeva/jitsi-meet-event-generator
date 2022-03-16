@@ -89,8 +89,8 @@
   "optionsSaveBtn": {
     "message": "Сохранить"
   },
-  "templateConfName": {
-    "message": "Имя конференции"
+  "templateConfSubject": {
+    "message": "Тема конференции"
   },
   "templateConfDescription": {
     "message": "Пояснение"
@@ -122,7 +122,7 @@
   "popupConfName": {
     "message": "Имя конференции"
   },
-  "popupConfTheme": {
+  "popupConfSubject": {
     "message": "Тема конференции"
   },
   "popupStart": {

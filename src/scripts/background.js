@@ -16,7 +16,7 @@ async function setDefaultStorageOptions() {
         'no-video': true,
         'alarm': 0,
         'message-template':
-            '${title}\n' +
+            '${confSubject}\n' +
             '${description}\n' +
             '${organizer}\n' +
             '${startDate}, ${startTime}\n' +

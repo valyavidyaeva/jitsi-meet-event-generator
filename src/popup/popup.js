@@ -1,6 +1,6 @@
 let emailState = {
     attachments: [],
-    theme: '',
+    subject: '',
     initialBody: '',
 };
 let storageData = {};
@@ -75,10 +75,10 @@ async function createMessage(e) {
     }
     emailState.attachments = await messenger.compose.listAttachments(composeActionTabId);
 
-    const themeValue = document.getElementById('conf-theme').value;
-    emailState.theme = themeValue;
+    const subjectValue = document.getElementById('conf-subject').value;
+    emailState.subject = subjectValue;
     messenger.compose.setComposeDetails(composeActionTabId, {
-        subject: themeValue,
+        subject: subjectValue,
     });
 
     const currentData = await messenger.compose.getComposeDetails(composeActionTabId);
@@ -99,11 +99,11 @@ async function createMessage(e) {
 async function deleteMessage() {
     const currentData = await messenger.compose.getComposeDetails(composeActionTabId);
 
-    if (emailState.theme === currentData.subject) {
+    if (emailState.subject === currentData.subject) {
         messenger.compose.setComposeDetails(composeActionTabId, {
             subject: '',
         });
-        emailState.theme = '';
+        emailState.subject = '';
     }
 
     let html = new XMLSerializer().serializeToString(emailState.initialBody);
@@ -141,7 +141,7 @@ function createIcsFile() {
         date: eventDate,
         time: eventTime,
         timezone,
-        summary: document.getElementById('conf-theme').value,
+        summary: document.getElementById('conf-subject').value,
         description: storageData['conf-description'],
         organizer: storageData.organizer,
         alarm: storageData.alarm,
@@ -191,17 +191,8 @@ function convertDate(date, time) {
 }
 
 function createMessageBody() {
-    // Заголовок
-    // Тема, длительность
-    // Организатор
-    // Время часовой пояс: , начало: , окончание:
-    // Ссылка для подключения
-    // Пояснение
-
-    // - Текст заголовка
-    // - Текст пояснения
-
     const confLink = createConfLink();
+    const confSubject = document.getElementById('conf-subject').value;
     const startDate = document.getElementById('conf-start-date').value;
     const startDateStr = startDate.split('-').reverse().join('.');
     const startTime = document.getElementById('conf-start-time').value;
@@ -225,6 +216,7 @@ function createMessageBody() {
             timezone: storageData.timezone_text,
             duration: duration,
             confLink: confLink,
+            confSubject: confSubject,
         };
         let parsedMessageTemplate = messageTemplate;
         for (const [key, value] of Object.entries(dict)) {
