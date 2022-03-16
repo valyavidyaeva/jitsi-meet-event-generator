@@ -7,7 +7,6 @@ function saveOptions(e) {
         "server": document.querySelector("[name='server']:checked").value,
         "server-custom-value": document.querySelector("#server-custom-value").value,
         "organizer": document.querySelector("#organizer").value,
-        "conf-title": document.querySelector("#conf-title").value,
         "conf-description": document.querySelector("#conf-description").value,
         "conf-name": document.querySelector("[name='conf-name']:checked").value,
         "conf-name-custom-value": document.querySelector("#conf-name-custom-value").value,
@@ -27,7 +26,6 @@ function fillOptionsValuesFromStorage() {
         document.querySelector(`[name='server'][value='${ res.server }']`).checked = true;
         document.querySelector("#server-custom-value").value = res['server-custom-value'];
         document.querySelector("#organizer").value = res.organizer;
-        document.querySelector("#conf-title").value = res['conf-title'];
         document.querySelector("#conf-description").value = res['conf-description'];
         document.querySelector(`[name='conf-name'][value='${ res['conf-name'] }']`).checked = true;
         document.querySelector("#conf-name-custom-value").value = res['conf-name-custom-value'];

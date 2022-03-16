@@ -8,7 +8,6 @@ async function setDefaultStorageOptions() {
         'server': 'public',
         'server-custom-value': '',
         'organizer': defaultAccount.identities[0].email,
-        'conf-title': '',
         'conf-description': '',
         'conf-name': 'random',
         'conf-name-custom-value': '',

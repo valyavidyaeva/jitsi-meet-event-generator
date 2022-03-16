@@ -216,7 +216,6 @@ function createMessageBody() {
     const messageTemplate = storageData['message-template'];
     if (messageTemplate) {
         const dict = {
-            title: storageData['conf-title'],
             description: storageData['conf-description'],
             organizer: storageData.organizer,
             startDate: startDateStr,
@@ -239,10 +238,6 @@ function createMessageBody() {
         bodyText = parsedMessageTemplateArr.join('\n');
     }
     else {
-        if (storageData['conf-title']) {
-            bodyText += `${storageData['conf-title']} \n`;
-            bodyHtml += `<p>${storageData['conf-title']}</p>`;
-        }
         if (storageData['conf-description']) {
             bodyText += `${storageData['conf-description']} \n`;
             bodyHtml += `<p>${storageData['conf-description']}</p>`;
