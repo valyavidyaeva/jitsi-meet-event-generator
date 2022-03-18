@@ -11,6 +11,7 @@ async function setInitialStorageOptions() {
         'conf-description': '',
         'conf-name': 'random',
         'conf-name-custom-value': '',
+        'duration': 30,
         'required-user-name': true,
         'no-sound': true,
         'no-video': true,

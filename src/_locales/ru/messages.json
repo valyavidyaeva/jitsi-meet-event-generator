@@ -35,6 +35,9 @@
   "optionsConfNameOwn": {
     "message": "Собственное"
   },
+  "optionsDuration" : {
+    "message": "Длительность конференции, мин"
+  },
   "optionsConfSettings": {
     "message": "Настройки конференции"
   },

@@ -10,6 +10,7 @@ function saveOptions(e) {
         "conf-description": document.querySelector("#conf-description").value,
         "conf-name": document.querySelector("[name='conf-name']:checked").value,
         "conf-name-custom-value": document.querySelector("#conf-name-custom-value").value,
+        "duration": document.querySelector("#duration").value,
         "required-user-name": document.querySelector("#required-user-name").checked,
         "no-sound": document.querySelector("#no-sound").checked,
         "no-video": document.querySelector("#no-video").checked,
@@ -29,6 +30,7 @@ function fillOptionsValuesFromStorage() {
         document.querySelector("#conf-description").value = res['conf-description'];
         document.querySelector(`[name='conf-name'][value='${ res['conf-name'] }']`).checked = true;
         document.querySelector("#conf-name-custom-value").value = res['conf-name-custom-value'];
+        document.querySelector("#duration").value = res.duration;
         document.querySelector("#required-user-name").checked = res['required-user-name'];
         document.querySelector("#no-sound").checked = res['no-sound'];
         document.querySelector("#no-video").checked = res['no-video'];
@@ -63,4 +65,14 @@ document.getElementById('conf-name-custom-value').addEventListener('change', fun
     value = value.replace(/\s+$/gi, '');
     value = value.replace(/\s+/gi, '-');
     event.target.value = value;
+})
+document.getElementById('duration').addEventListener('input', function (event){
+    let value = Number(event.target.value);
+    if (value && !isNaN(value)) {
+        if (value > 0) event.target.value = value;
+        else event.target.value = 30;
+    }
+    else {
+        event.target.value = 30;
+    }
 })

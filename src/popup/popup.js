@@ -34,14 +34,21 @@ function setDefaultPopupValues() {
     const storage = browser.storage.local.get();
     storage.then((res) => {
         storageData = Object.assign({}, res);
-        if (res['conf-name'] === 'random') {
+        if (storageData['conf-name'] === 'random') {
             document.getElementById('conf-name').value = getRandomString();
         }
-        else if (res['conf-name-custom-value']) {
-            document.getElementById('conf-name').value = res['conf-name-custom-value'];
+        else if (storageData['conf-name-custom-value']) {
+            document.getElementById('conf-name').value = storageData['conf-name-custom-value'];
         }
 
         document.getElementById('js-timezone-value').innerText = storageData.timezone_text;
+        const startDateField = document.getElementById('conf-start-date');
+        const startTimeField = document.getElementById('conf-start-time');
+        const start = new Date();
+        startDateField.value = `${start.getFullYear()}-${(start.getMonth() + 1).toString().padStart(2, '0')}-${(start.getDate()).toString().padStart(2, '0')}`;
+        startTimeField.value = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
+        document.getElementById('conf-duration').value = storageData.duration;
+        handleDateInputChange();
     });
 }
 
@@ -118,12 +125,7 @@ async function deleteMessage() {
         }
     }
 
-    if (storageData['conf-name'] === 'random') {
-        document.getElementById('conf-name').value = getRandomString();
-    }
-    else if (storageData['conf-name-custom-value']) {
-        document.getElementById('conf-name').value = storageData['conf-name-custom-value'];
-    }
+    setDefaultPopupValues();
 }
 
 function createIcsFile() {
@@ -292,12 +294,18 @@ function UIDGenerator(date, time, timezone) {
 }
 
 function handleDurationInput(event) {
-    event.target.value = event.target.value.replace(/[^\d,]/gi, '');
-    handleDateInputChange(event);
+    let value = Number(event.target.value);
+    if (value && !isNaN(value)) {
+        if (value > 0) event.target.value = value;
+        else event.target.value = storageData.duration;
+    }
+    else {
+        event.target.value = storageData.duration;
+    }
+    handleDateInputChange();
 }
 
-function handleDateInputChange(event) {
-    const changedField = event.target.id;
+function handleDateInputChange() {
     const startDateField = document.getElementById('conf-start-date');
     const startTimeField = document.getElementById('conf-start-time');
     const endDateField = document.getElementById('conf-end-date');
@@ -309,60 +317,22 @@ function handleDateInputChange(event) {
     const endTimeValue = endTimeField.value;
     const durationValue = Number(durationField.value);
 
-    if (changedField === 'conf-duration') {
-        if (durationValue && !isNaN(durationValue)) {
-            if (startDateValue && startTimeValue) {
-                const startDateArr = startDateValue.split('-').map(_ => Number(_));
-                const startTimeArr = startTimeValue.split(':').map(_ => Number(_));
-                const startDate = new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]);
-                const end = new Date(startDate.getTime() + durationValue*60*1000);
-                endDateField.value = `${end.getFullYear()}-${(end.getMonth() + 1).toString().padStart(2, '0')}-${(end.getDate()).toString().padStart(2, '0')}`;
-                endTimeField.value = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
-            }
-            else if (endDateValue && endTimeValue) {
-                const endDateArr = endDateValue.split('-').map(_ => Number(_));
-                const endTimeArr = endTimeValue.split(':').map(_ => Number(_));
-                const endDate = new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]);
-                const start = new Date(endDate.getTime() - durationValue*60*1000);
-                startDateField.value = `${start.getFullYear()}-${(start.getMonth() + 1).toString().padStart(2, '0')}-${(start.getDate()).toString().padStart(2, '0')}`;
-                startTimeField.value = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
-            }
-        }
-        else {
-            endDateField.value = '';
-            endTimeField.value = '';
-        }
+    if (startDateValue && startTimeValue && durationValue) {
+        const startDateArr = startDateValue.split('-').map(_ => Number(_));
+        const startTimeArr = startTimeValue.split(':').map(_ => Number(_));
+        const startDate = new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]);
+        const end = new Date(startDate.getTime() + durationValue*60*1000);
+        endDateField.value = `${end.getFullYear()}-${(end.getMonth() + 1).toString().padStart(2, '0')}-${(end.getDate()).toString().padStart(2, '0')}`;
+        endTimeField.value = end.getHours().toString().padStart(2, '0') + ':' + end.getMinutes().toString().padStart(2, '0');
     }
-    else {
-        if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
-            const startDateArr = startDateValue.split('-').map(_ => Number(_));
-            const startTimeArr = startTimeValue.split(':').map(_ => Number(_));
-            const endDateArr = endDateValue.split('-').map(_ => Number(_));
-            const endTimeArr = endTimeValue.split(':').map(_ => Number(_));
-            const startDate = new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2]);
-            const startDatetime = new Date(startDateArr[0], startDateArr[1] - 1, startDateArr[2], startTimeArr[0], startTimeArr[1]);
-            const endDate = new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2]);
-            const endDatetime = new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]);
-            if (endDatetime.getTime() > startDatetime.getTime()) {
-                durationField.value = Math.abs((endDatetime.getTime() - startDatetime.getTime()) / 60 / 1000);
-            }
-            else {
-                if (endDate.getTime() <= startDate.getTime()) {
-                    endDateField.value = '';
-                }
-                endTimeField.value = '';
-                durationField.value = '';
-            }
-        }
-        else {
-            durationField.value = '';
-        }
+    else if (endDateValue && endTimeValue && durationValue) {
+        const endDateArr = endDateValue.split('-').map(_ => Number(_));
+        const endTimeArr = endTimeValue.split(':').map(_ => Number(_));
+        const endDate = new Date(endDateArr[0], endDateArr[1] - 1, endDateArr[2], endTimeArr[0], endTimeArr[1]);
+        const start = new Date(endDate.getTime() - durationValue*60*1000);
+        startDateField.value = `${start.getFullYear()}-${(start.getMonth() + 1).toString().padStart(2, '0')}-${(start.getDate()).toString().padStart(2, '0')}`;
+        startTimeField.value = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
     }
 
-    if (startDateField.value && startTimeField.value && endDateField.value && endTimeField.value) {
-        document.getElementById('create-btn').disabled = false;
-    }
-    else {
-        document.getElementById('create-btn').disabled = true;
-    }
+    document.getElementById('create-btn').disabled = !(startDateField.value && startTimeField.value && endDateField.value && endTimeField.value);
 }
