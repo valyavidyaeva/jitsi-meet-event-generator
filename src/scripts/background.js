@@ -1,4 +1,4 @@
-async function setDefaultStorageOptions() {
+async function setInitialStorageOptions() {
     const systemTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const foundedTz = TZ.find(item => item.tzCode === systemTz);
     const defaultAccount = await browser.accounts.getDefault();
@@ -26,11 +26,11 @@ async function setDefaultStorageOptions() {
     };
 
     const storage = browser.storage.local.get();
-    storage.then(() => {
-        browser.storage.local.set(defaultValues);
+    storage.then((res) => {
+        browser.storage.local.set(Object.assign(defaultValues, res));
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    setDefaultStorageOptions();
+    setInitialStorageOptions();
 });
