@@ -1,6 +1,9 @@
 function saveOptions(e) {
     e.preventDefault();
 
+    checkDisablingServerCustomValue();
+    checkServerCustomValue();
+
     browser.storage.local.set({
         "timezone": document.querySelector("#timezone").value,
         "timezone_text": document.querySelector("#timezone").dataset.text,
@@ -50,12 +53,33 @@ function createTimezonesSelector() {
     }
 }
 
+function checkDisablingServerCustomValue() {
+    const serverCustomRadio = document.getElementById('server-custom');
+    const serverCustomField = document.getElementById('server-custom-value');
+    serverCustomField.disabled = !serverCustomRadio.checked;
+}
+
+function checkServerCustomValue() {
+    const serverCustomField = document.getElementById('server-custom-value');
+    let value = serverCustomField.value;
+    if (!value) {
+        serverCustomField.value = JITSI_DOMAIN;
+    }
+    else {
+        const backSlashRegex = /\/$/g;
+        if (!backSlashRegex.test(value)) serverCustomField.value = value + '/';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     createTimezonesSelector();
     fillOptionsValuesFromStorage();
     dataI18n();
 });
 document.getElementById('options-form').addEventListener('submit', saveOptions);
+document.getElementById('server-public').addEventListener('change', checkDisablingServerCustomValue);
+document.getElementById('server-custom').addEventListener('change', checkDisablingServerCustomValue);
+document.getElementById('server-custom-value').addEventListener('change', checkServerCustomValue);
 document.getElementById('timezone').addEventListener('change', function (event){
     this.dataset.text = event.target.selectedOptions[0].dataset.text;
 })

@@ -1,3 +1,5 @@
+const JITSI_DOMAIN = 'https://meet.jit.si/';
+
 function i18n(messageName, substitutions = undefined) {
     if (substitutions === undefined) {
         return browser.i18n.getMessage(messageName);

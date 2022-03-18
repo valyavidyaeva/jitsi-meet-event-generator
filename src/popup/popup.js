@@ -1,4 +1,3 @@
-const JITSI_DOMAIN = 'https://meet.jit.si/';
 let emailState = {
     attachments: [],
     subject: '',
