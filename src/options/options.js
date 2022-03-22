@@ -84,11 +84,7 @@ document.getElementById('timezone').addEventListener('change', function (event){
     this.dataset.text = event.target.selectedOptions[0].dataset.text;
 })
 document.getElementById('conf-name-custom-value').addEventListener('change', function (event){
-    let value = event.target.value;
-    value = value.replace(/^\s+/gi, '');
-    value = value.replace(/\s+$/gi, '');
-    value = value.replace(/\s+/gi, '-');
-    event.target.value = value;
+    event.target.value = toDashCase(event.target.value);
 })
 document.getElementById('duration').addEventListener('input', function (event){
     let value = Number(event.target.value);

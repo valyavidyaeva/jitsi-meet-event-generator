@@ -58,6 +58,9 @@ function setListeners() {
     document.querySelectorAll('.js-date-time-input').forEach(item => {
         item.addEventListener('change', (event) => handleDateInputChange(event));
     });
+    document.getElementById('conf-name').addEventListener('change', function (event){
+        event.target.value = toDashCase(event.target.value);
+    });
 }
 
 async function createMessage(e) {
@@ -282,9 +285,13 @@ function createConfLink() {
         domain = storageData['server-custom-value'];
     }
 
+    const confNameValue = document.getElementById('conf-name').value;
     let confName = getRandomString();
     if (storageData['conf-name'] === 'custom' && storageData['conf-name-custom-value']) {
         confName = storageData['conf-name-custom-value'];
+    }
+    if (confNameValue) {
+        confName = confNameValue;
     }
 
     let confLink = '';

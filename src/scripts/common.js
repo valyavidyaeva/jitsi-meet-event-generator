@@ -30,3 +30,11 @@ function dataI18n() {
 function getRandomString() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
+
+function toDashCase(string){
+    let value = string;
+    value = value.replace(/^\s+/gi, '');
+    value = value.replace(/\s+$/gi, '');
+    value = value.replace(/\s+/gi, '-');
+    return value;
+}
