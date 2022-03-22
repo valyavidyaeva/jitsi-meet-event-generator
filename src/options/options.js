@@ -3,6 +3,8 @@ function saveOptions(e) {
 
     checkDisablingServerCustomValue();
     checkServerCustomValue();
+    checkDisablingConfNameCustomValue();
+    checkConfNameCustomValue();
 
     browser.storage.local.set({
         "timezone": document.querySelector("#timezone").value,
@@ -39,6 +41,8 @@ function fillOptionsValuesFromStorage() {
         document.querySelector("#no-video").checked = res['no-video'];
         document.querySelector("#alarm").value = res.alarm;
         document.querySelector("#message-template").value = res['message-template'];
+        checkDisablingServerCustomValue();
+        checkDisablingConfNameCustomValue();
     });
 }
 
@@ -71,6 +75,21 @@ function checkServerCustomValue() {
     }
 }
 
+function checkDisablingConfNameCustomValue() {
+    const confNameCustomRadio = document.getElementById('conf-name-custom');
+    const confNameCustomField = document.getElementById('conf-name-custom-value');
+    console.log(confNameCustomRadio.checked)
+    confNameCustomField.disabled = !confNameCustomRadio.checked;
+}
+
+function checkConfNameCustomValue() {
+    const serverCustomField = document.getElementById('conf-name-custom-value');
+    let value = serverCustomField.value;
+    if (!value) {
+        serverCustomField.value = getRandomString();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     createTimezonesSelector();
     fillOptionsValuesFromStorage();
@@ -80,6 +99,9 @@ document.getElementById('options-form').addEventListener('submit', saveOptions);
 document.getElementById('server-public').addEventListener('change', checkDisablingServerCustomValue);
 document.getElementById('server-custom').addEventListener('change', checkDisablingServerCustomValue);
 document.getElementById('server-custom-value').addEventListener('change', checkServerCustomValue);
+document.getElementById('conf-name-random').addEventListener('change', checkDisablingConfNameCustomValue);
+document.getElementById('conf-name-custom').addEventListener('change', checkDisablingConfNameCustomValue);
+document.getElementById('conf-name-custom-value').addEventListener('change', checkConfNameCustomValue);
 document.getElementById('timezone').addEventListener('change', function (event){
     this.dataset.text = event.target.selectedOptions[0].dataset.text;
 })
