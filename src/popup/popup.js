@@ -138,6 +138,7 @@ function createIcsFile() {
         };
     const timezone = storageData.timezone;
     const location = storageData.server === 'custom' && storageData['server-custom-value'] ? storageData['server-custom-value'] : JITSI_DOMAIN;
+    const messageBody = createMessageBody();
 
     const data = createIcsEvent({
         uid: UIDGenerator(eventDate, eventTime, timezone),
@@ -146,7 +147,7 @@ function createIcsFile() {
         timezone,
         location,
         summary: document.getElementById('conf-subject').value,
-        description: storageData['conf-description'],
+        description: messageBody.bodyString,
         organizer: storageData.organizer,
         alarm: storageData.alarm,
         url: createConfLink(),
@@ -207,6 +208,7 @@ function createMessageBody() {
 
     let bodyText = '';
     let bodyHtml = '';
+    let bodyString = '';
 
     const messageTemplate = storageData['message-template'];
     if (messageTemplate) {
@@ -227,11 +229,12 @@ function createMessageBody() {
             const searchedStr = '${' + key + '}';
             parsedMessageTemplate = parsedMessageTemplate.replace(searchedStr, value);
         }
-        const parsedMessageTemplateArr = parsedMessageTemplate.split("\n");
+        const parsedMessageTemplateArr = parsedMessageTemplate.split('\n');
         parsedMessageTemplateArr.forEach(item => {
             bodyHtml += `<p>${ item }</p>`;
         });
-        bodyText = parsedMessageTemplateArr.join('\n');
+        bodyText = parsedMessageTemplate;
+        bodyString = parsedMessageTemplateArr.join('\\n').toString();
     }
     else {
         if (storageData['conf-description']) {
@@ -244,11 +247,17 @@ function createMessageBody() {
         }
 
         bodyText += `
-            Начало ${startDateStr} в ${startTime},
-            окончание ${endDateStr} в ${endTime},
-            (${duration} мин),
+            Начало ${startDateStr} в ${startTime}, \n
+            окончание ${endDateStr} в ${endTime} (${duration} мин), \n
             временная зона – ${storageData.timezone_text} \n
-            ${confLink} \n
+            ${confLink}
+        `;
+
+        bodyString += `
+            Начало ${startDateStr} в ${startTime}, \n
+            окончание ${endDateStr} в ${endTime} (${duration} мин), \n
+            временная зона – ${storageData.timezone_text} \n
+            ${confLink}
         `;
 
         bodyHtml += `
@@ -262,7 +271,7 @@ function createMessageBody() {
         `;
     }
 
-    return { bodyText, bodyHtml };
+    return { bodyText, bodyHtml, bodyString };
 }
 
 function createConfLink() {
