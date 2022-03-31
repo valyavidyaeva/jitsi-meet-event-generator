@@ -78,7 +78,6 @@ function checkServerCustomValue() {
 function checkDisablingConfNameCustomValue() {
     const confNameCustomRadio = document.getElementById('conf-name-custom');
     const confNameCustomField = document.getElementById('conf-name-custom-value');
-    console.log(confNameCustomRadio.checked)
     confNameCustomField.disabled = !confNameCustomRadio.checked;
 }
 
@@ -90,25 +89,25 @@ function checkConfNameCustomValue() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+(() => {
     createTimezonesSelector();
     fillOptionsValuesFromStorage();
     dataI18n();
-});
-document.getElementById('options-form').addEventListener('submit', saveOptions);
-document.getElementById('server-public').addEventListener('change', checkDisablingServerCustomValue);
-document.getElementById('server-custom').addEventListener('change', checkDisablingServerCustomValue);
-document.getElementById('server-custom-value').addEventListener('change', checkServerCustomValue);
-document.getElementById('conf-name-random').addEventListener('change', checkDisablingConfNameCustomValue);
-document.getElementById('conf-name-custom').addEventListener('change', checkDisablingConfNameCustomValue);
-document.getElementById('conf-name-custom-value').addEventListener('change', checkConfNameCustomValue);
-document.getElementById('timezone').addEventListener('change', function (event){
-    this.dataset.text = event.target.selectedOptions[0].dataset.text;
-})
-document.getElementById('conf-name-custom-value').addEventListener('change', function (event){
-    event.target.value = toDashCase(event.target.value);
-})
-document.getElementById('duration').addEventListener('input', function (event){
+
+    document.getElementById('options-form').addEventListener('submit', saveOptions);
+    document.getElementById('server-public').addEventListener('change', checkDisablingServerCustomValue);
+    document.getElementById('server-custom').addEventListener('change', checkDisablingServerCustomValue);
+    document.getElementById('server-custom-value').addEventListener('change', checkServerCustomValue);
+    document.getElementById('conf-name-random').addEventListener('change', checkDisablingConfNameCustomValue);
+    document.getElementById('conf-name-custom').addEventListener('change', checkDisablingConfNameCustomValue);
+    document.getElementById('conf-name-custom-value').addEventListener('change', checkConfNameCustomValue);
+    document.getElementById('timezone').addEventListener('change', function (event){
+        this.dataset.text = event.target.selectedOptions[0].dataset.text;
+    })
+    document.getElementById('conf-name-custom-value').addEventListener('change', function (event){
+        event.target.value = toDashCase(event.target.value);
+    })
+    document.getElementById('duration').addEventListener('input', function (event){
     let value = Number(event.target.value);
     if (value && !isNaN(value)) {
         if (value > 0) event.target.value = value;
@@ -118,3 +117,4 @@ document.getElementById('duration').addEventListener('input', function (event){
         event.target.value = 30;
     }
 })
+})();
