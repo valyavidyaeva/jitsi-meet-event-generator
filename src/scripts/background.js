@@ -32,6 +32,35 @@ async function setInitialStorageOptions() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+async function setInitialWindowStorage(window) {
+    const tabs = await browser.tabs.query({windowId: window.id});
+    const composeActionTabId = tabs[0].id;
+
+    const emailInitialState = {
+        attachments: [],
+        subject: '',
+        initialBody: '',
+    };
+    emailInitialState.attachments = await messenger.compose.listAttachments(composeActionTabId);
+    const currentData = await messenger.compose.getComposeDetails(composeActionTabId);
+    emailInitialState.subject = currentData.subject;
+    if (currentData.isPlainText) {
+        emailInitialState.initialBody = currentData.plainTextBody;
+    }
+    else {
+        emailInitialState.initialBody = currentData.body;
+    }
+
+    browser.storage.local.set({ [`windowId-${window.id}`]: JSON.stringify({ emailInitialState }) });
+}
+
+(() => {
     setInitialStorageOptions();
-});
+
+    browser.windows.onCreated.addListener((window) => setInitialWindowStorage(window));
+
+    browser.windows.onRemoved.addListener(window => {
+        browser.storage.local.remove([`windowId-${window}`]);
+    });
+})();
+

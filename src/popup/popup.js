@@ -1,17 +1,14 @@
-let emailState = {
-    attachments: [],
-    subject: '',
-    initialBody: '',
-};
-let storageData = {};
 let composeActionTabId;
+let windowId;
+let emailInitialState = {}
+let storageData = {};
 
-document.addEventListener('DOMContentLoaded', () => {
-    setInitials();
-    setDefaultPopupValues();
+(async () => {
+    await setInitials();
+    await setInitialPopupValues();
     dataI18n();
     setListeners();
-});
+})();
 
 async function setInitials() {
     const tabs = await messenger.tabs.query({
@@ -19,36 +16,61 @@ async function setInitials() {
         currentWindow: true,
     });
     composeActionTabId = tabs[0].id;
-    emailState.attachments = await messenger.compose.listAttachments(composeActionTabId);
-    const currentData = await messenger.compose.getComposeDetails(composeActionTabId);
-    if (currentData.isPlainText) {
-        emailState.initialBody = currentData.plainTextBody;
-    }
-    else {
-        emailState.initialBody = new DOMParser().parseFromString(currentData.body, 'text/html');
-    }
+    windowId = tabs[0].windowId;
 }
 
-function setDefaultPopupValues() {
-    const storage = browser.storage.local.get();
-    storage.then((res) => {
-        storageData = Object.assign({}, res);
-        if (storageData['conf-name'] === 'random') {
-            document.getElementById('conf-name').value = getRandomString();
-        }
-        else if (storageData['conf-name-custom-value']) {
-            document.getElementById('conf-name').value = storageData['conf-name-custom-value'];
-        }
+async function getWindowStorage() {
+    const storage = await browser.storage.local.get([`windowId-${windowId}`]);
+    return JSON.parse(storage[`windowId-${windowId}`]);
+}
 
-        document.getElementById('js-timezone-value').innerText = storageData.timezone_text;
-        const startDateField = document.getElementById('conf-start-date');
-        const startTimeField = document.getElementById('conf-start-time');
+async function setWindowStorage(newData) {
+    const currentStorage = await browser.storage.local.get([`windowId-${windowId}`]);
+    const currentStorageObject = JSON.parse(currentStorage[`windowId-${windowId}`]);
+    const newStorage = Object.assign(currentStorageObject, newData);
+    await browser.storage.local.set({ [`windowId-${windowId}`]: JSON.stringify(newStorage) });
+}
+
+async function setInitialPopupValues() {
+    const storage = await browser.storage.local.get();
+    storageData = Object.assign({}, storage);
+    const windowStorage = await getWindowStorage();
+    emailInitialState = windowStorage.emailInitialState;
+    const popupFormFromWindowStorage = windowStorage.popupFormObject;
+
+    if (popupFormFromWindowStorage && popupFormFromWindowStorage['conf-name-custom-value']) {
+        document.getElementById('conf-name-custom-value').value = popupFormFromWindowStorage['conf-name-custom-value'];
+    }
+    else if (storageData['conf-name'] === 'random') {
+        document.getElementById('conf-name-custom-value').value = getRandomString();
+    }
+    else if (storageData['conf-name-custom-value']) {
+        document.getElementById('conf-name-custom-value').value = storageData['conf-name-custom-value'];
+    }
+
+    if (popupFormFromWindowStorage && popupFormFromWindowStorage['conf-subject']) {
+        document.getElementById('conf-subject').value = popupFormFromWindowStorage['conf-subject'];
+    }
+
+    document.getElementById('js-timezone-value').innerText = storageData.timezone_text;
+    const startDateField = document.getElementById('conf-start-date');
+    const startTimeField = document.getElementById('conf-start-time');
+    if (popupFormFromWindowStorage && popupFormFromWindowStorage['conf-start-date']) {
+        startDateField.value = popupFormFromWindowStorage['conf-start-date'];
+        startTimeField.value = popupFormFromWindowStorage['conf-start-time']
+    }
+    else {
         const start = new Date();
         startDateField.value = `${start.getFullYear()}-${(start.getMonth() + 1).toString().padStart(2, '0')}-${(start.getDate()).toString().padStart(2, '0')}`;
         startTimeField.value = start.getHours().toString().padStart(2, '0') + ':' + start.getMinutes().toString().padStart(2, '0');
+    }
+    if (popupFormFromWindowStorage && popupFormFromWindowStorage['conf-duration']) {
+        document.getElementById('conf-duration').value = popupFormFromWindowStorage['conf-duration'];
+    }
+    else {
         document.getElementById('conf-duration').value = storageData.duration;
-        handleDateInputChange();
-    });
+    }
+    handleDateInputChange();
 }
 
 function setListeners() {
@@ -58,7 +80,7 @@ function setListeners() {
     document.querySelectorAll('.js-date-time-input').forEach(item => {
         item.addEventListener('change', (event) => handleDateInputChange(event));
     });
-    document.getElementById('conf-name').addEventListener('change', function (event){
+    document.getElementById('conf-name-custom-value').addEventListener('change', function (event){
         event.target.value = toDashCase(event.target.value);
     });
 }
@@ -70,11 +92,12 @@ async function createMessage(e) {
         file: createIcsFile(),
         name: 'jitsi-invite.ics',
     };
+    const currentAttachments = await messenger.compose.listAttachments(composeActionTabId);
 
-    if (emailState.attachments.length) {
-        const index = emailState.attachments.findIndex(file => file.name === 'jitsi-invite.ics');
+    if (currentAttachments.length) {
+        const index = currentAttachments.findIndex(file => file.name === 'jitsi-invite.ics');
         if (index > -1) {
-            await messenger.compose.updateAttachment(composeActionTabId, emailState.attachments[index].id, fileObj);
+            await messenger.compose.updateAttachment(composeActionTabId, currentAttachments[index].id, fileObj);
         }
         else {
             await messenger.compose.addAttachment(composeActionTabId, fileObj);
@@ -83,10 +106,8 @@ async function createMessage(e) {
     else {
         await messenger.compose.addAttachment(composeActionTabId, fileObj);
     }
-    emailState.attachments = await messenger.compose.listAttachments(composeActionTabId);
 
     const subjectValue = document.getElementById('conf-subject').value;
-    emailState.subject = subjectValue;
     messenger.compose.setComposeDetails(composeActionTabId, {
         subject: subjectValue,
     });
@@ -104,30 +125,33 @@ async function createMessage(e) {
         let html = new XMLSerializer().serializeToString(document);
         messenger.compose.setComposeDetails(composeActionTabId, { body: html });
     }
+
+    await updatePopupFormData();
 }
 
 async function deleteMessage() {
     const currentData = await messenger.compose.getComposeDetails(composeActionTabId);
+    const currentAttachments = await messenger.compose.listAttachments(composeActionTabId);
 
-    if (emailState.subject === currentData.subject) {
+    if (emailInitialState.subject !== currentData.subject) {
         messenger.compose.setComposeDetails(composeActionTabId, {
-            subject: '',
+            subject: emailInitialState.subject,
         });
-        emailState.subject = '';
     }
 
-    let html = new XMLSerializer().serializeToString(emailState.initialBody);
+    let parsedInitialBody = new DOMParser().parseFromString(emailInitialState.initialBody, 'text/html');
+    let html = new XMLSerializer().serializeToString(parsedInitialBody);
     messenger.compose.setComposeDetails(composeActionTabId, { body: html });
 
-    if (emailState.attachments.length) {
-        const index = emailState.attachments.findIndex(file => file.name === 'jitsi-invite.ics');
+    if (currentAttachments.length) {
+        const index = currentAttachments.findIndex(file => file.name === 'jitsi-invite.ics');
         if (index > -1) {
-            await messenger.compose.removeAttachment(composeActionTabId, emailState.attachments[index].id);
-            emailState.attachments = await messenger.compose.listAttachments(composeActionTabId);
+            await messenger.compose.removeAttachment(composeActionTabId, currentAttachments[index].id);
         }
     }
 
-    setDefaultPopupValues();
+    await setWindowStorage({ 'popupFormObject': null })
+    await setInitialPopupValues();
 }
 
 function createIcsFile() {
@@ -285,7 +309,7 @@ function createConfLink() {
         domain = storageData['server-custom-value'];
     }
 
-    const confNameValue = document.getElementById('conf-name').value;
+    const confNameValue = document.getElementById('conf-name-custom-value').value;
     let confName = getRandomString();
     if (storageData['conf-name'] === 'custom' && storageData['conf-name-custom-value']) {
         confName = storageData['conf-name-custom-value'];
@@ -350,4 +374,14 @@ function handleDateInputChange() {
     }
 
     document.getElementById('create-btn').disabled = !(startDateField.value && startTimeField.value && endDateField.value && endTimeField.value);
+}
+
+async function updatePopupFormData() {
+    const formElement = document.getElementById('conf-form');
+    let popupFormData = new FormData(formElement);
+    let popupFormObject = {};
+    for (let pair of popupFormData.entries()) {
+        popupFormObject[pair[0]] = pair[1];
+    }
+    await setWindowStorage({ popupFormObject });
 }
