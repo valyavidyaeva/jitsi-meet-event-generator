@@ -118,13 +118,13 @@ async function createMessage(e) {
     const currentData = await messenger.compose.getComposeDetails(composeActionTabId);
     const messageBody = createMessageBody();
     if (currentData.isPlainText) {
-        let body = currentData.plainTextBody;
-        body += messageBody.bodyText;
+        let body = messageBody.bodyText;
+        body += currentData.plainTextBody;
         messenger.compose.setComposeDetails(composeActionTabId, { plainTextBody: body });
     }
     else {
         let document = new DOMParser().parseFromString(currentData.body, 'text/html');
-        document.body.insertAdjacentHTML( 'beforeend', messageBody.bodyHtml);
+        document.body.insertAdjacentHTML( 'afterbegin', messageBody.bodyHtml);
         let html = new XMLSerializer().serializeToString(document);
         messenger.compose.setComposeDetails(composeActionTabId, { body: html });
     }
