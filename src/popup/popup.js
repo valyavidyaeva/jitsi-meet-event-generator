@@ -83,6 +83,9 @@ function setListeners() {
     document.getElementById('conf-name-custom-value').addEventListener('change', function (event){
         event.target.value = toDashCase(event.target.value);
     });
+    document.querySelectorAll('#conf-form input').forEach(item => {
+        item.addEventListener('change', updatePopupFormData);
+    });
 }
 
 async function createMessage(e) {
