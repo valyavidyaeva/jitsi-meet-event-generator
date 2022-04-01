@@ -253,18 +253,22 @@ function createMessageBody() {
         confLink: confLink,
         confSubject: confSubject,
     };
+
     let parsedMessageTemplate = storageData['message-template'];
     for (const [key, value] of Object.entries(dict)) {
         const searchedStr = '${' + key + '}';
-        parsedMessageTemplate = parsedMessageTemplate.replace(searchedStr, value);
+        if (value) {
+            parsedMessageTemplate = parsedMessageTemplate.replace(searchedStr, value);
+        }
+        else {
+            parsedMessageTemplate = parsedMessageTemplate.replace(searchedStr, '');
+        }
     }
+
     const parsedMessageTemplateArr = parsedMessageTemplate.split('\n');
-    parsedMessageTemplateArr.forEach(item => {
-        bodyHtml += `<p>${ item }</p>`;
-    });
+    bodyHtml += `${ parsedMessageTemplateArr.join('<br>').toString() }`;
     bodyText = parsedMessageTemplate;
     bodyString = parsedMessageTemplateArr.join('\\n').toString();
-
 
     return { bodyText, bodyHtml, bodyString };
 }
