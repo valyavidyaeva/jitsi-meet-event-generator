@@ -193,7 +193,7 @@ function createIcsEvent(data) {
             "BEGIN:VALARM\n" +
             "TRIGGER:" + alarm + "\n" +
             "ACTION:DISPLAY\n" +
-            "DESCRIPTION:" + description + "\n" +
+            foldLine("DESCRIPTION:" + description) + "\n" +
             "END:VALARM\n"
         ;
     }
@@ -208,11 +208,11 @@ function createIcsEvent(data) {
         "DTSTART;TZID=" + timezone + ":" + convertDate(date.start, time.start) + "\n" +
         "DTEND;TZID=" + timezone + ":" + convertDate(date.end, time.end) + "\n" +
         "UID:" + uid + "\n" +
-        "LOCATION:" + location + "\n" +
-        "URL:" + url + "\n" +
-        (organizer ? "ORGANIZER;CN=" + organizer + ":mailto:" + organizer + "\n" : "") +
-        (description ? "DESCRIPTION:" + description + "\n" : "") +
-        (summary ? "SUMMARY:" + summary + "\n" : "") +
+        foldLine("LOCATION:" + location) + "\n" +
+        foldLine("URL:" + url) + "\n" +
+        (organizer ? foldLine("ORGANIZER;CN=" + organizer + ":mailto:" + organizer) + "\n" : "") +
+        (description ? foldLine("DESCRIPTION:" + description) + "\n" : "") +
+        (summary ? foldLine("SUMMARY:" + summary) + "\n" : "") +
         "SEQUENCE:0\n" +
         "TRANSP:OPAQUE\n" +
         "END:VEVENT\n" +
