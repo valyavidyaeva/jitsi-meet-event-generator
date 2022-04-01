@@ -25,11 +25,6 @@
             </div>
         </div>
 
-        <div class="conf-form__field-group conf-form__group">
-            <label for="organizer" class="conf-form__label" data-i18n="optionsOrganizer"></label>
-            <input type="text" id="organizer" value="" placeholder="organizer@mail.com" class="conf-form__field">
-        </div>
-
         <div class="conf-form__group">
             <label for="conf-description" class="conf-form__label" data-i18n="optionsConfDescription"></label>
             <textarea name="conf-description" id="conf-description" class="conf-form__textarea"></textarea>
@@ -93,7 +88,8 @@
             <ul class="template__vars-list">
                 <li>${confSubject} — <span data-i18n="templateConfSubject"></span></li>
                 <li>${description} — <span data-i18n="templateConfDescription"></span></li>
-                <li>${organizer} — <span data-i18n="templateOrganizer"></span></li>
+                <li>${organizerName} — <span data-i18n="templateOrganizerName"></span></li>
+                <li>${organizerEmail} — <span data-i18n="templateOrganizerEmail"></span></li>
                 <li>${startDate} — <span data-i18n="templateStartDate"></span></li>
                 <li>${startTime} — <span data-i18n="templateStartTime"></span></li>
                 <li>${endDate} — <span data-i18n="templateEndDate"></span></li>

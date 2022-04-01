@@ -11,7 +11,6 @@ function saveOptions(e) {
         "timezone_text": document.querySelector("#timezone").dataset.text,
         "server": document.querySelector("[name='server']:checked").value,
         "server-custom-value": document.querySelector("#server-custom-value").value,
-        "organizer": document.querySelector("#organizer").value,
         "conf-description": document.querySelector("#conf-description").value,
         "conf-name": document.querySelector("[name='conf-name']:checked").value,
         "conf-name-custom-value": document.querySelector("#conf-name-custom-value").value,
@@ -31,7 +30,6 @@ function fillOptionsValuesFromStorage() {
         document.querySelector("#timezone").dataset.text = res.timezone_text;
         document.querySelector(`[name='server'][value='${ res.server }']`).checked = true;
         document.querySelector("#server-custom-value").value = res['server-custom-value'];
-        document.querySelector("#organizer").value = res.organizer;
         document.querySelector("#conf-description").value = res['conf-description'];
         document.querySelector(`[name='conf-name'][value='${ res['conf-name'] }']`).checked = true;
         document.querySelector("#conf-name-custom-value").value = res['conf-name-custom-value'];
@@ -89,6 +87,21 @@ function checkConfNameCustomValue() {
     }
 }
 
+function checkMessageTemplateValue() {
+    const field = document.getElementById('message-template');
+    let value = field.value;
+    if (!value) {
+        field.value = '${confSubject}\n' +
+            '${description}\n' +
+            '${organizerName}\n' +
+            '${organizerEmail}\n' +
+            '${startDate}, ${startTime}\n' +
+            '${endDate}, ${endTime} (${duration})\n' +
+            '${timezone}\n' +
+            '${confLink}\n';
+    }
+}
+
 (() => {
     createTimezonesSelector();
     fillOptionsValuesFromStorage();
@@ -101,6 +114,7 @@ function checkConfNameCustomValue() {
     document.getElementById('conf-name-random').addEventListener('change', checkDisablingConfNameCustomValue);
     document.getElementById('conf-name-custom').addEventListener('change', checkDisablingConfNameCustomValue);
     document.getElementById('conf-name-custom-value').addEventListener('change', checkConfNameCustomValue);
+    document.getElementById('message-template').addEventListener('change', checkMessageTemplateValue);
     document.getElementById('timezone').addEventListener('change', function (event){
         this.dataset.text = event.target.selectedOptions[0].dataset.text;
     })

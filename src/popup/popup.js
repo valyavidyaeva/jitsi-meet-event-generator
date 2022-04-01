@@ -178,7 +178,7 @@ function createIcsFile() {
         location,
         summary: document.getElementById('conf-subject').value,
         description: messageBody.bodyString,
-        organizer: storageData.organizer,
+        organizer: {name: storageData['organizer-name'], email: storageData['organizer-email']},
         alarm: storageData.alarm,
         url: createConfLink(),
     });
@@ -210,7 +210,7 @@ function createIcsEvent(data) {
         "UID:" + uid + "\n" +
         foldLine("LOCATION:" + location) + "\n" +
         foldLine("URL:" + url) + "\n" +
-        (organizer ? foldLine("ORGANIZER;CN=" + organizer + ":mailto:" + organizer) + "\n" : "") +
+        foldLine("ORGANIZER;CN=" + organizer.name + ":mailto:" + organizer.email) + "\n" +
         (description ? foldLine("DESCRIPTION:" + description) + "\n" : "") +
         (summary ? foldLine("SUMMARY:" + summary) + "\n" : "") +
         "SEQUENCE:0\n" +
@@ -240,66 +240,31 @@ function createMessageBody() {
     let bodyHtml = '';
     let bodyString = '';
 
-    const messageTemplate = storageData['message-template'];
-    if (messageTemplate) {
-        const dict = {
-            description: storageData['conf-description'],
-            organizer: storageData.organizer,
-            startDate: startDateStr,
-            startTime: startTime,
-            endDate: endDateStr,
-            endTime: endTime,
-            timezone: storageData.timezone_text,
-            duration: duration,
-            confLink: confLink,
-            confSubject: confSubject,
-        };
-        let parsedMessageTemplate = messageTemplate;
-        for (const [key, value] of Object.entries(dict)) {
-            const searchedStr = '${' + key + '}';
-            parsedMessageTemplate = parsedMessageTemplate.replace(searchedStr, value);
-        }
-        const parsedMessageTemplateArr = parsedMessageTemplate.split('\n');
-        parsedMessageTemplateArr.forEach(item => {
-            bodyHtml += `<p>${ item }</p>`;
-        });
-        bodyText = parsedMessageTemplate;
-        bodyString = parsedMessageTemplateArr.join('\\n').toString();
+    const dict = {
+        description: storageData['conf-description'],
+        organizerName: storageData['organizer-name'],
+        organizerEmail: storageData['organizer-email'],
+        startDate: startDateStr,
+        startTime: startTime,
+        endDate: endDateStr,
+        endTime: endTime,
+        timezone: storageData.timezone_text,
+        duration: duration,
+        confLink: confLink,
+        confSubject: confSubject,
+    };
+    let parsedMessageTemplate = storageData['message-template'];
+    for (const [key, value] of Object.entries(dict)) {
+        const searchedStr = '${' + key + '}';
+        parsedMessageTemplate = parsedMessageTemplate.replace(searchedStr, value);
     }
-    else {
-        if (storageData['conf-description']) {
-            bodyText += `${storageData['conf-description']} \n`;
-            bodyHtml += `<p>${storageData['conf-description']}</p>`;
-        }
-        if (storageData['organizer']) {
-            bodyText += `Организатор: ${storageData.organizer} \n`;
-            bodyHtml += `<p>Организатор: ${storageData.organizer}</p>`;
-        }
+    const parsedMessageTemplateArr = parsedMessageTemplate.split('\n');
+    parsedMessageTemplateArr.forEach(item => {
+        bodyHtml += `<p>${ item }</p>`;
+    });
+    bodyText = parsedMessageTemplate;
+    bodyString = parsedMessageTemplateArr.join('\\n').toString();
 
-        bodyText += `
-            Начало ${startDateStr} в ${startTime}, \n
-            окончание ${endDateStr} в ${endTime} (${duration} мин), \n
-            временная зона – ${storageData.timezone_text} \n
-            ${confLink}
-        `;
-
-        bodyString += `
-            Начало ${startDateStr} в ${startTime}, \n
-            окончание ${endDateStr} в ${endTime} (${duration} мин), \n
-            временная зона – ${storageData.timezone_text} \n
-            ${confLink}
-        `;
-
-        bodyHtml += `
-            <p>
-                Начало ${startDateStr} в ${startTime},
-                окончание ${endDateStr} в ${endTime},
-                (${duration} мин),
-                временная зона – ${storageData.timezone_text}
-             </p>
-            <p>${confLink}</p>
-        `;
-    }
 
     return { bodyText, bodyHtml, bodyString };
 }

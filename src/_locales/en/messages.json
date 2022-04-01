@@ -20,9 +20,6 @@
   "optionsServerAddressPrivate": {
     "message": "Private"
   },
-  "optionsOrganizer": {
-    "message": "Organizer"
-  },
   "optionsConfDescription": {
     "message": "Description"
   },
@@ -98,8 +95,11 @@
   "templateConfDescription": {
     "message": "Description"
   },
-  "templateOrganizer": {
-    "message": "Organizer"
+  "templateOrganizerName": {
+    "message": "Organizer name"
+  },
+  "templateOrganizerEmail": {
+    "message": "Organizer email"
   },
   "templateStartDate": {
     "message": "Start date"

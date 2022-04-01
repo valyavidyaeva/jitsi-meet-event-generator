@@ -7,7 +7,8 @@ async function setInitialStorageOptions() {
         'timezone_text': foundedTz.label,
         'server': 'public',
         'server-custom-value': '',
-        'organizer': defaultAccount.identities[0].email,
+        'organizer-name': defaultAccount.identities[0].name,
+        'organizer-email': defaultAccount.identities[0].email,
         'conf-description': '',
         'conf-name': 'random',
         'conf-name-custom-value': '',
@@ -19,7 +20,8 @@ async function setInitialStorageOptions() {
         'message-template':
             '${confSubject}\n' +
             '${description}\n' +
-            '${organizer}\n' +
+            '${organizerName}\n' +
+            '${organizerEmail}\n' +
             '${startDate}, ${startTime}\n' +
             '${endDate}, ${endTime} (${duration})\n' +
             '${timezone}\n' +
