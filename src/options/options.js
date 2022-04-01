@@ -1,16 +1,14 @@
 function saveOptions(e) {
     e.preventDefault();
 
-    checkDisablingServerCustomValue();
-    checkServerCustomValue();
+    checkServerValue();
     checkDisablingConfNameCustomValue();
     checkConfNameCustomValue();
 
     browser.storage.local.set({
         "timezone": document.querySelector("#timezone").value,
         "timezone_text": document.querySelector("#timezone").dataset.text,
-        "server": document.querySelector("[name='server']:checked").value,
-        "server-custom-value": document.querySelector("#server-custom-value").value,
+        "server": document.querySelector("#server").value,
         "conf-description": document.querySelector("#conf-description").value,
         "conf-name": document.querySelector("[name='conf-name']:checked").value,
         "conf-name-custom-value": document.querySelector("#conf-name-custom-value").value,
@@ -28,8 +26,7 @@ function fillOptionsValuesFromStorage() {
     storage.then((res) => {
         document.querySelector("#timezone").value = res.timezone;
         document.querySelector("#timezone").dataset.text = res.timezone_text;
-        document.querySelector(`[name='server'][value='${ res.server }']`).checked = true;
-        document.querySelector("#server-custom-value").value = res['server-custom-value'];
+        document.querySelector("#server").value = res['server'];
         document.querySelector("#conf-description").value = res['conf-description'];
         document.querySelector(`[name='conf-name'][value='${ res['conf-name'] }']`).checked = true;
         document.querySelector("#conf-name-custom-value").value = res['conf-name-custom-value'];
@@ -39,7 +36,7 @@ function fillOptionsValuesFromStorage() {
         document.querySelector("#no-video").checked = res['no-video'];
         document.querySelector("#alarm").value = res.alarm;
         document.querySelector("#message-template").value = res['message-template'];
-        checkDisablingServerCustomValue();
+        checkServerValue();
         checkDisablingConfNameCustomValue();
     });
 }
@@ -55,21 +52,15 @@ function createTimezonesSelector() {
     }
 }
 
-function checkDisablingServerCustomValue() {
-    const serverCustomRadio = document.getElementById('server-custom');
-    const serverCustomField = document.getElementById('server-custom-value');
-    serverCustomField.disabled = !serverCustomRadio.checked;
-}
-
-function checkServerCustomValue() {
-    const serverCustomField = document.getElementById('server-custom-value');
-    let value = serverCustomField.value;
+function checkServerValue() {
+    const field = document.getElementById('server');
+    let value = field.value;
     if (!value) {
-        serverCustomField.value = JITSI_DOMAIN;
+        field.value = JITSI_DOMAIN;
     }
     else {
         const backSlashRegex = /\/$/g;
-        if (!backSlashRegex.test(value)) serverCustomField.value = value + '/';
+        if (!backSlashRegex.test(value)) field.value = value + '/';
     }
 }
 
@@ -80,10 +71,10 @@ function checkDisablingConfNameCustomValue() {
 }
 
 function checkConfNameCustomValue() {
-    const serverCustomField = document.getElementById('conf-name-custom-value');
-    let value = serverCustomField.value;
+    const field = document.getElementById('conf-name-custom-value');
+    let value = field.value;
     if (!value) {
-        serverCustomField.value = getRandomString();
+        field.value = getRandomString();
     }
 }
 
@@ -108,9 +99,7 @@ function checkMessageTemplateValue() {
     dataI18n();
 
     document.getElementById('options-form').addEventListener('submit', saveOptions);
-    document.getElementById('server-public').addEventListener('change', checkDisablingServerCustomValue);
-    document.getElementById('server-custom').addEventListener('change', checkDisablingServerCustomValue);
-    document.getElementById('server-custom-value').addEventListener('change', checkServerCustomValue);
+    document.getElementById('server').addEventListener('change', checkServerValue);
     document.getElementById('conf-name-random').addEventListener('change', checkDisablingConfNameCustomValue);
     document.getElementById('conf-name-custom').addEventListener('change', checkDisablingConfNameCustomValue);
     document.getElementById('conf-name-custom-value').addEventListener('change', checkConfNameCustomValue);

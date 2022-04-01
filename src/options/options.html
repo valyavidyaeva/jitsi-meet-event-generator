@@ -12,17 +12,9 @@
             <select name="timezone" id="timezone" data-text="" class="conf-form__field"></select>
         </div>
 
-        <div class="conf-form__group">
-            <h2 class="conf-form__group-title" data-i18n="optionsServerAddress"></h2>
-            <div class="conf-form__field-group conf-form__field-group_flex conf-form__list-field-item">
-                <input type="radio" name="server" id="server-public" value="public" class="conf-form__radio" checked>
-                <label for="server-public" class="conf-form__label" data-i18n="optionsServerAddressPublic"></label>
-            </div>
-            <div class="conf-form__field-group conf-form__field-group_flex conf-form__list-field-item">
-                <input type="radio" name="server" id="server-custom" value="custom" class="conf-form__radio">
-                <label for="server-custom" class="conf-form__label" data-i18n="optionsServerAddressPrivate"></label>
-                <input type="text" id="server-custom-value" value="" class="conf-form__field conf-form__field_in-flex" placeholder="https://meet.jit.si/" disabled>
-            </div>
+        <div class="conf-form__field-group conf-form__group">
+            <label for="server" class="conf-form__label" data-i18n="optionsServerAddress"></label>
+            <input type="text" id="server" value="" class="conf-form__field" placeholder="https://meet.jit.si/">
         </div>
 
         <div class="conf-form__group">

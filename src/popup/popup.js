@@ -167,7 +167,7 @@ function createIcsFile() {
             end: document.querySelector('#conf-end-time').value
         };
     const timezone = storageData.timezone;
-    const location = storageData.server === 'custom' && storageData['server-custom-value'] ? storageData['server-custom-value'] : JITSI_DOMAIN;
+    const location = storageData.server;
     const messageBody = createMessageBody();
 
     const data = createIcsEvent({
@@ -272,11 +272,7 @@ function createMessageBody() {
 function createConfLink() {
     // Docs https://jitsi.github.io/handbook/docs/user-guide/user-guide-advanced
 
-    let domain = JITSI_DOMAIN;
-    if (storageData['server-custom-value']) {
-        domain = storageData['server-custom-value'];
-    }
-
+    const domain = storageData.server;
     const confNameValue = document.getElementById('conf-name-custom-value').value;
     let confName = getRandomString();
     if (storageData['conf-name'] === 'custom' && storageData['conf-name-custom-value']) {

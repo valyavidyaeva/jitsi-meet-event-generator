@@ -1,3 +1,5 @@
+const JITSI_DOMAIN = 'https://meet.jit.si/';
+
 async function setInitialStorageOptions() {
     const systemTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const foundedTz = TZ.find(item => item.tzCode === systemTz);
@@ -5,8 +7,7 @@ async function setInitialStorageOptions() {
     const defaultValues = {
         'timezone': foundedTz.tzCode,
         'timezone_text': foundedTz.label,
-        'server': 'public',
-        'server-custom-value': '',
+        'server': JITSI_DOMAIN,
         'organizer-name': defaultAccount.identities[0].name,
         'organizer-email': defaultAccount.identities[0].email,
         'conf-description': '',
